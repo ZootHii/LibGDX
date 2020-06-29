@@ -15,8 +15,7 @@ public class SecureCore extends ApplicationAdapter {
 	Sprite core;
 	Circle coreCircle;
 	Enemy enemy1 ,enemy2, enemy3, enemy4;
-	double enemy4Acc = 0.012; // XD
-	// deneme değişimö 
+	double enemy4Acc = 0.012;
 	double enemy1Acc = 0.068;
 	double enemy2Acc = 0.046;
 	double enemy3Acc = 0.022;
