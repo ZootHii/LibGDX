@@ -1,6 +1,8 @@
 package com.zoothii.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 class Background extends Object {
 
@@ -8,4 +10,12 @@ class Background extends Object {
         super(texture, x, y, width, height);
     }
 
+    public static void backgroundAnimation(Background background, SpriteBatch batch){
+        if(background.getY() > Gdx.graphics.getHeight()){
+            background.setY(-Gdx.graphics.getHeight());
+        }
+
+        background.setY(background.getY()+1.5f);
+        batch.draw(background.getTexture(), background.getX(), background.getY(), background.getWidth(), background.getHeight());
+    }
 }

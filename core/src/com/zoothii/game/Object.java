@@ -1,5 +1,6 @@
 package com.zoothii.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 abstract class Object {
@@ -55,4 +56,16 @@ abstract class Object {
     public void setHeight(float height) {
         this.height = height;
     }
+
+    public static double randX(){
+        int max = (int) (Gdx.graphics.getWidth()-Gdx.graphics.getHeight()/8f);
+        int min = 0;
+        return Math.random() * (max - min + 1) + min;
+    }
+    public static double randY(){
+        int max = (int) (Gdx.graphics.getHeight() + Gdx.graphics.getHeight()/13f + 300f - Gdx.graphics.getHeight()*0.78);
+        int min = (int) (Gdx.graphics.getHeight() - Gdx.graphics.getHeight()*0.78);
+        return Math.random() * (max - min + 1) + min;
+    }
+
 }
