@@ -140,10 +140,10 @@ class GameScreen implements Screen {
     }
 
     public void createEnemy(){
-        enemy1 = new Enemy(new Texture("enemy.png"), (float) randX(),(float) -randY(),Gdx.graphics.getHeight()/8.5f, Gdx.graphics.getHeight()/8.5f ,4, 0.068, new Circle());
-        enemy2 = new Enemy(new Texture("enemy1.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/9f,Gdx.graphics.getHeight() /7.5f, Gdx.graphics.getHeight() /7.5f ,4, 0.046, new Circle());
-        enemy3 = new Enemy(new Texture("enemy2.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/7f,Gdx.graphics.getHeight() /6.5f, Gdx.graphics.getHeight() /6.5f ,4, 0.022,new Circle());
-        enemy4 = new Enemy(new Texture("enemy3.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/5f,Gdx.graphics.getHeight() /6.5f, Gdx.graphics.getHeight() /6.5f ,4, 0.012,new Circle());
+        enemy1 = new Enemy(new Texture("enemy.png"), (float) randX(),(float) -randY(),Gdx.graphics.getHeight()/9f, Gdx.graphics.getHeight()/9f ,4, 0.068, new Circle());
+        enemy2 = new Enemy(new Texture("enemy1.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/9f,Gdx.graphics.getHeight() /8f, Gdx.graphics.getHeight() /8f ,4, 0.046, new Circle());
+        enemy3 = new Enemy(new Texture("enemy2.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/7f,Gdx.graphics.getHeight() /7f, Gdx.graphics.getHeight() /7f ,4, 0.022,new Circle());
+        enemy4 = new Enemy(new Texture("enemy3.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/5f,Gdx.graphics.getHeight() /7f, Gdx.graphics.getHeight() /7f ,4, 0.012,new Circle());
     }
 
     public double randX(){
