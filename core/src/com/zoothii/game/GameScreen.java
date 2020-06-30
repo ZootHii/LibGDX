@@ -21,7 +21,9 @@ class GameScreen implements Screen {
     Enemy enemy1 ,enemy2, enemy3, enemy4;
 
     Background background1, background2;
+    //Background backgroundTest;
     public static String command = "";
+    public static int score = 0;
     ShapeRenderer shapeRenderer;
 
     public GameScreen(SecureCore p)
@@ -36,7 +38,7 @@ class GameScreen implements Screen {
         float CORE_WIDTH_HEIGHT = Gdx.graphics.getHeight()/13f;
 
         batch = new SpriteBatch();
-
+        //backgroundTest = new Background(new Texture("logoBack2.png"), 0,0 , SCREEN_WIDTH, SCREEN_HEIGHT);
         background1 = new Background(new Texture("background.png"), 0,0 , SCREEN_WIDTH, SCREEN_HEIGHT);
         background2 = new Background(new Texture("background2.png"), 0, -SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -53,10 +55,11 @@ class GameScreen implements Screen {
         stage.act(delta);
         // START
         batch.begin();
+        //batch.draw(backgroundTest.getTexture(), backgroundTest.getX(), backgroundTest.getY(), backgroundTest.getWidth(), backgroundTest.getHeight());
         Background.backgroundAnimation(background1, batch);
         Background.backgroundAnimation(background2, batch);
         batch.draw(core, core.getX(), core.getY(), core.getWidth(), core.getHeight());
-
+        System.out.println("Score: "+ score);
         collisionDetection(); // command = "over";
         if(command.equals("start")){
             Enemy.setEnemyAnimation(enemy1, enemy2, enemy3, enemy4, batch);
@@ -67,15 +70,15 @@ class GameScreen implements Screen {
             Enemy.set4EnemyVelocity(enemy1, enemy2, enemy3, enemy4);
             if(Gdx.input.isTouched()){
                 if (core.getX() <= 0) {
-                    core.setX(0);
+                    core.setX(Gdx.graphics.getHeight()/192f);
                     core.setY(core.getY());
-                }else if (core.getX()+Gdx.graphics.getHeight()/11f >= Gdx.graphics.getWidth()+Gdx.graphics.getHeight()/21f){
+                }else if (core.getX()+Gdx.graphics.getHeight()/11.3f >= Gdx.graphics.getWidth()+Gdx.graphics.getHeight()/21f){
                     core.setX(Gdx.graphics.getWidth()-Gdx.graphics.getHeight()/21f);
                     core.setY(core.getY());
                 }else if (core.getY() <= 0){
                     core.setY(0);
                     core.setX(core.getX());
-                }else if (core.getY()+Gdx.graphics.getHeight()/11f >= Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/21f){
+                }else if (core.getY()+Gdx.graphics.getHeight()/11.3f >= Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/21f){
                     core.setY(Gdx.graphics.getHeight()-Gdx.graphics.getHeight()/21f);
                     core.setX(core.getX());
                 }
@@ -137,10 +140,10 @@ class GameScreen implements Screen {
     }
 
     public void createEnemy(){
-        enemy1 = new Enemy(new Texture("enemy.png"), (float) randX(),(float) -randY(),Gdx.graphics.getHeight() /10f, Gdx.graphics.getHeight() /10f ,4, 0.068, new Circle());
-        enemy2 = new Enemy(new Texture("enemy1.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/9f,Gdx.graphics.getHeight() /9f, Gdx.graphics.getHeight() /10f ,4, 0.046, new Circle());
-        enemy3 = new Enemy(new Texture("enemy2.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/7f,Gdx.graphics.getHeight() /8f, Gdx.graphics.getHeight() /8f ,4, 0.022,new Circle());
-        enemy4 = new Enemy(new Texture("enemy3.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/5f,Gdx.graphics.getHeight() /8f, Gdx.graphics.getHeight() /8f ,4, 0.012,new Circle());
+        enemy1 = new Enemy(new Texture("enemy.png"), (float) randX(),(float) -randY(),Gdx.graphics.getHeight()/8.5f, Gdx.graphics.getHeight()/8.5f ,4, 0.068, new Circle());
+        enemy2 = new Enemy(new Texture("enemy1.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/9f,Gdx.graphics.getHeight() /7.5f, Gdx.graphics.getHeight() /7.5f ,4, 0.046, new Circle());
+        enemy3 = new Enemy(new Texture("enemy2.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/7f,Gdx.graphics.getHeight() /6.5f, Gdx.graphics.getHeight() /6.5f ,4, 0.022,new Circle());
+        enemy4 = new Enemy(new Texture("enemy3.png"), (float) randX(),(float) -randY()-Gdx.graphics.getHeight()/5f,Gdx.graphics.getHeight() /6.5f, Gdx.graphics.getHeight() /6.5f ,4, 0.012,new Circle());
     }
 
     public double randX(){
@@ -154,7 +157,7 @@ class GameScreen implements Screen {
         return Math.random() * (max - min + 1) + min;
     }
 
-    public void setShapeRenderer(){
+    /*public void setShapeRenderer(){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
         shapeRenderer.circle(coreCircle.x, coreCircle.y, coreCircle.radius);
@@ -180,9 +183,7 @@ class GameScreen implements Screen {
         shapeRenderer.circle(enemy4.getEnemyCircle().x, enemy4.getEnemyCircle().y, enemy4.getEnemyCircle().radius);
         shapeRenderer.end();
 
-    }
-
-
+    }*/
 
     @Override public void show() { }
 

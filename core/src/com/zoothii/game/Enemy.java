@@ -11,6 +11,7 @@ class Enemy extends Object {
     private double velocity, acceleration;
     private Circle enemyCircle;
 
+
     public Enemy(Texture texture, float x, float y, float width, float height, double velocity, double acceleration, Circle enemyCircle) {
         super(texture, x, y, width, height);
         this.velocity = velocity;
@@ -54,6 +55,7 @@ class Enemy extends Object {
             enemyA.setVelocity(4);
             enemyA.setX((float) randX());
             double enemyAcceleration = 0.0083;
+            GameScreen.score++;
             enemyA.setAcceleration(enemyA.getAcceleration()+enemyAcceleration);
         }
         enemyIntersection(enemyA, enemyB, enemyC, enemyD);
