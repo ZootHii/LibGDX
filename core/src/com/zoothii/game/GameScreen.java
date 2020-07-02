@@ -3,29 +3,28 @@ package com.zoothii.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 class GameScreen implements Screen {
     Stage stage;
     private SecureCore parent;
-    SpriteBatch batch;
     Sprite core;
     Circle coreCircle;
     Rectangle buttonRectangle;
@@ -35,25 +34,31 @@ class GameScreen implements Screen {
     ImageButton buttonImage;
     public static String command = "";
     public static int score = 0;
+    public static int highScore = 0;
     ShapeRenderer shapeRenderer;
     Table table;
+    Hud hud;
+    private OrthographicCamera orthographicCamera;
+    private Viewport viewport;
 
-    public GameScreen(SecureCore p) {
-        super();
+    public GameScreen(SecureCore parent) {
+        this.parent = parent;
+
         table = new Table();
 
         menuTexture3 = new Texture("title.png");
-
-        parent = p;
+        orthographicCamera = new OrthographicCamera();
+        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), orthographicCamera);
         stage = new Stage();
+        hud = new Hud(parent.batch);
         Gdx.input.setInputProcessor(stage);
+
+
 
         float SCREEN_WIDTH = Gdx.graphics.getWidth();
         float SCREEN_HEIGHT = Gdx.graphics.getHeight();
         float CORE_WIDTH_HEIGHT = Gdx.graphics.getHeight()/13f;
 
-
-        batch = new SpriteBatch();
 
         background1 = new Background(new Texture("background.png"), 0,0 , SCREEN_WIDTH, SCREEN_HEIGHT);
         background2 = new Background(new Texture("background2.png"), 0, -SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -68,8 +73,9 @@ class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        stage.act(delta);
 
+
+        stage.act(delta);
         coreCircle.set(core.getX()+core.getWidth()/2, core.getY()+core.getWidth()/2, core.getWidth()/2);
         Enemy.set4EnemyCircle(enemy1, enemy2, enemy3, enemy4);
         /*setShapeRenderer();*/
@@ -85,56 +91,63 @@ class GameScreen implements Screen {
             drawable.setMinHeight(SCREEN_HEIGHT/9.31f);
             buttonImage = new ImageButton(drawable);
             buttonImage.setPosition(SCREEN_WIDTH/2-SCREEN_HEIGHT/3.82f/2f, CORE_WIDTH_HEIGHT*8f);
-            buttonImage.addListener(new InputListener(){
+            buttonImage.addListener(new ClickListener(){
                 @Override
-                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                public void clicked(InputEvent event, float x, float y) {
                     parent.changeScreen(SecureCore.MENU_SCREEN);
-                    return true;
                 }
             });
             stage.addActor(buttonImage);
         }
 
         // START
-        batch.begin();
-        Background.backgroundAnimation(background1, batch);
-        Background.backgroundAnimation(background2, batch);
+        parent.batch.begin();
+        Background.backgroundAnimation(background1, parent.batch);
+        Background.backgroundAnimation(background2, parent.batch);
         collisionDetection(); // command = "over";
         if(command.equals("over")){
             gameOver();
         }
         if(command.equals("start")){
-            Enemy.setEnemyAnimation(enemy1, enemy2, enemy3, enemy4, batch);
-            Enemy.setEnemyAnimation(enemy2, enemy1, enemy3, enemy4, batch);
-            Enemy.setEnemyAnimation(enemy3, enemy1, enemy2, enemy4, batch);
-            Enemy.setEnemyAnimation(enemy4, enemy1, enemy2, enemy3, batch);
+            Enemy.setEnemyAnimation(enemy1, enemy2, enemy3, enemy4, parent.batch);
+            Enemy.setEnemyAnimation(enemy2, enemy1, enemy3, enemy4, parent.batch);
+            Enemy.setEnemyAnimation(enemy3, enemy1, enemy2, enemy4, parent.batch);
+            Enemy.setEnemyAnimation(enemy4, enemy1, enemy2, enemy3, parent.batch);
 
             Enemy.set4EnemyVelocity(enemy1, enemy2, enemy3, enemy4);
+
             if(Gdx.input.isTouched()){
-                if (core.getX() <= 0) {
-                    core.setX(Gdx.graphics.getHeight()/192f);
-                    core.setY(core.getY());
-                }else if (core.getX()+Gdx.graphics.getHeight()/11.3f >= Gdx.graphics.getWidth()+Gdx.graphics.getHeight()/21f){
-                    core.setX(Gdx.graphics.getWidth()-Gdx.graphics.getHeight()/21f);
-                    core.setY(core.getY());
-                }else if (core.getY() <= 0){
-                    core.setY(0);
-                    core.setX(core.getX());
-                }else if (core.getY()+Gdx.graphics.getHeight()/11.3f >= Gdx.graphics.getHeight()+Gdx.graphics.getHeight()/21f){
-                    core.setY(Gdx.graphics.getHeight()-Gdx.graphics.getHeight()/21f);
-                    core.setX(core.getX());
-                }
                 core.setX(core.getX()+Gdx.input.getDeltaX());
                 core.setY(core.getY()-Gdx.input.getDeltaY());
             }
+
+            if (core.getX() <= 0) {
+                core.setX(0);
+                core.setY(core.getY());
+            }
+            if (core.getX()+Gdx.graphics.getHeight()/13f*0.65f >= Gdx.graphics.getWidth()){
+                core.setX(Gdx.graphics.getWidth()-Gdx.graphics.getHeight()/13f*0.65f);
+                core.setY(core.getY());
+            }
+            if (core.getY() <= 0){
+                core.setY(0);
+                core.setX(core.getX());
+            }
+            if (core.getY()+Gdx.graphics.getHeight()/13f*0.65f >= Gdx.graphics.getHeight()){
+                core.setY(Gdx.graphics.getHeight()-Gdx.graphics.getHeight()/13f*0.65f);
+                core.setX(core.getX());
+            }
         }
 
-        batch.draw(core, core.getX(), core.getY(), core.getWidth(), core.getHeight());
-        batch.end();
+        parent.batch.draw(core, core.getX(), core.getY(), core.getWidth(), core.getHeight());
+        parent.batch.end();
         // END
+        parent.batch.setProjectionMatrix(hud.stage.getCamera().combined); // TODO learn this shit
+        hud.stage.draw();
 
         stage.draw();
     }
+
 
     @Override
     public void dispose () {
@@ -143,7 +156,7 @@ class GameScreen implements Screen {
         shapeRenderer.dispose();
         button.dispose();
         parent.dispose();
-        batch.dispose();
+        parent.batch.dispose();
         stage.dispose();
     }
 
@@ -156,15 +169,15 @@ class GameScreen implements Screen {
 
     public void gameOver(){
 
-        Enemy.stopEnemy(enemy1, batch);
-        Enemy.stopEnemy(enemy2, batch);
-        Enemy.stopEnemy(enemy3, batch);
-        Enemy.stopEnemy(enemy4, batch);
+        Enemy.stopEnemy(enemy1, parent.batch);
+        Enemy.stopEnemy(enemy2, parent.batch);
+        Enemy.stopEnemy(enemy3, parent.batch);
+        Enemy.stopEnemy(enemy4, parent.batch);
 
+        if(highScore < score){
+            highScore = score;
+        }
         score = 0;
-
-
-
     }
 
     public void createEnemy(){
@@ -215,7 +228,7 @@ class GameScreen implements Screen {
     }
 
     @Override public void resize(int width, int height) {
-
+        viewport.update(width,height);
     }
 
     @Override public void pause() { }

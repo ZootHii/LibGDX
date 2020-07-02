@@ -3,23 +3,19 @@ package com.zoothii.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 class SplashScreen implements Screen {
 
     Stage stage;
-    private SpriteBatch batch;
     private Texture splashTextureLogo;
     private Texture splashTextureLogoBack;
     private SecureCore parent;
 
-    private float timeToShowSplashScreen = 2f;
+    private float timeToShowSplashScreen = 0f;
 
-    public SplashScreen(SecureCore p) {
-        super();
-        parent = p;
-        batch = new SpriteBatch();
+    public SplashScreen(SecureCore parent) {
+        this.parent = parent;
         stage = new Stage();
 
         Gdx.input.setInputProcessor(stage);
@@ -29,10 +25,10 @@ class SplashScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        batch.begin();
-        batch.draw(splashTextureLogoBack, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(splashTextureLogo, Gdx.graphics.getWidth()/3.82f, Gdx.graphics.getHeight()/2.2f, Gdx.graphics.getWidth()/2.1f, Gdx.graphics.getWidth()/2.1f);
-        batch.end();
+        parent.batch.begin();
+        parent.batch.draw(splashTextureLogoBack, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        parent.batch.draw(splashTextureLogo, Gdx.graphics.getWidth()/3.82f, Gdx.graphics.getHeight()/2.2f, Gdx.graphics.getWidth()/2.1f, Gdx.graphics.getWidth()/2.1f);
+        parent.batch.end();
 
         timeToShowSplashScreen -= delta;
         if(timeToShowSplashScreen <= 0){
@@ -51,7 +47,7 @@ class SplashScreen implements Screen {
     @Override public void hide() { }
 
     @Override public void dispose() {
-        batch.dispose();
+        parent.batch.dispose();
         parent.dispose();
         splashTextureLogo.dispose();
         splashTextureLogoBack.dispose();

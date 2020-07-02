@@ -13,38 +13,39 @@ import com.badlogic.gdx.math.Intersector;
 
 public class SecureCore extends Game {
 
-
 	public static final int SPLASH_SCREEN = 0;
 	public static final int GAME_SCREEN = 1;
 	public static final int MENU_SCREEN = 2;
-	public static final int GAME_OVER_SCREEN = 3;
+	public SpriteBatch batch;
 
+	/*public SecureCore() {
 
-	public SecureCore() { super(); }
+	}*/
 
 	@Override
-	public void create ()
-	{
+	public void create () {
+		batch = new SpriteBatch();
 		changeScreen(SPLASH_SCREEN);
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		getScreen().dispose();
 		Gdx.app.exit();
 	}
 
-	public void changeScreen(int screen)
-	{
+	@Override
+	public void render() {
+		super.render();
+	}
+
+	public void changeScreen(int screen) {
 		if(screen == SPLASH_SCREEN){
 			this.setScreen(new SplashScreen(this));
 		}else if(screen == GAME_SCREEN){
 			this.setScreen(new GameScreen(this));
 		}else if(screen == MENU_SCREEN){
 			this.setScreen(new MenuScreen(this));
-		}/*else if(screen == GAME_OVER_SCREEN){
-			this.setScreen(new GameOverScreen(this));
-		}*/
+		}
 	}
 }
