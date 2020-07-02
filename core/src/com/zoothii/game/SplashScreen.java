@@ -21,6 +21,7 @@ class SplashScreen implements Screen {
         parent = p;
         batch = new SpriteBatch();
         stage = new Stage();
+
         Gdx.input.setInputProcessor(stage);
         splashTextureLogo = new Texture("logo.png");
         splashTextureLogoBack = new Texture("logoBack2.png");
@@ -49,5 +50,12 @@ class SplashScreen implements Screen {
 
     @Override public void hide() { }
 
-    @Override public void dispose() { }
+    @Override public void dispose() {
+        batch.dispose();
+        parent.dispose();
+        splashTextureLogo.dispose();
+        splashTextureLogoBack.dispose();
+        stage.dispose();
+        Gdx.app.exit();
+    }
 }

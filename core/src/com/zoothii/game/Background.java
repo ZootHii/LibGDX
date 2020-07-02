@@ -15,7 +15,7 @@ class Background extends Object {
             background.setY(-Gdx.graphics.getHeight());
         }
 
-        background.setY(background.getY()+1.5f);
+        background.setY(background.getY()+1.35f);
         batch.draw(background.getTexture(), background.getX(), background.getY(), background.getWidth(), background.getHeight());
     }
 }

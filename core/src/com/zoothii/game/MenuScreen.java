@@ -4,21 +4,39 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 
 
 class MenuScreen implements Screen {
 
     private SpriteBatch batch;
-    private Texture menuTexture1, menuTexture2, texture;
+    private Texture backgroundTexture, coreTexture, titleTexture;
     private SecureCore parent;
+    ImageButton buttonImage;
+    Stage stage;
 
     public MenuScreen(SecureCore p) {
         super();
         parent = p;
         batch = new SpriteBatch();
-        menuTexture1 = new Texture("background.png");
-        menuTexture2 = new Texture("core.png");
-        texture = new Texture("enemy.png");
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+        backgroundTexture = new Texture("background.png");
+        coreTexture = new Texture("core.png");
+
+        titleTexture = new Texture("title2.png");
 
     }
     //TAP anywhere on the screen and move your finger to move core
@@ -30,22 +48,84 @@ class MenuScreen implements Screen {
         float SCREEN_HEIGHT = Gdx.graphics.getHeight();
         float CORE_WIDTH_HEIGHT = Gdx.graphics.getHeight()/13f;
         batch.begin();
-        batch.draw(menuTexture1, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(menuTexture2,SCREEN_WIDTH/2.24f, CORE_WIDTH_HEIGHT*11.7f, CORE_WIDTH_HEIGHT*0.65f, CORE_WIDTH_HEIGHT*0.65f);
-        batch.draw(texture, 50,50, 523f,523f);
+        batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(coreTexture,SCREEN_WIDTH/2.185f, CORE_WIDTH_HEIGHT*11.7f, CORE_WIDTH_HEIGHT*0.65f, CORE_WIDTH_HEIGHT*0.65f);
+        batch.draw(titleTexture,SCREEN_WIDTH/2f-Gdx.graphics.getHeight()/3.2f*3f/2, CORE_WIDTH_HEIGHT*8.4f, Gdx.graphics.getHeight()/3.2f*3f, Gdx.graphics.getHeight()/3.8f);
+        //batch.draw(rankTexture,SCREEN_WIDTH/2-210, CORE_WIDTH_HEIGHT*8f, 500, 200);
+
+
+
         batch.end();
-        if(Gdx.input.justTouched()){
+        /*if(Gdx.input.justTouched()){
             parent.changeScreen(SecureCore.GAME_SCREEN);
             GameScreen.command = "start";
-        }
+        }*/
 
+        playButton();
+        rankButton();
+        stage.act(Gdx.graphics.getRawDeltaTime());
+        stage.draw();
 
 
     }
 
+    public void playButton(){
+
+        float SCREEN_WIDTH = Gdx.graphics.getWidth();
+        float SCREEN_HEIGHT = Gdx.graphics.getHeight();
+        float CORE_WIDTH_HEIGHT = Gdx.graphics.getHeight()/13f;
+
+        Texture texture = new Texture("playButton111.png");
+        final Drawable drawable = new TextureRegionDrawable(new TextureRegion(texture));
+        drawable.setMinWidth(SCREEN_HEIGHT/3.82f);
+        drawable.setMinHeight(SCREEN_HEIGHT/9.31f);
+        //System.out.println(drawable.getMinHeight() + "" + drawable.getMinWidth());
+        buttonImage = new ImageButton(drawable);
+        buttonImage.setPosition(SCREEN_WIDTH/2-SCREEN_HEIGHT/3.82f/2f, CORE_WIDTH_HEIGHT*7f);
+        buttonImage.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                parent.changeScreen(SecureCore.GAME_SCREEN);
+                GameScreen.command = "start";
+            }
+        });
+        stage.addActor(buttonImage);
+    }
+
+    public void rankButton(){
+        float SCREEN_WIDTH = Gdx.graphics.getWidth();
+        float SCREEN_HEIGHT = Gdx.graphics.getHeight();
+        float CORE_WIDTH_HEIGHT = Gdx.graphics.getHeight()/13f;
+
+        Texture texture = new Texture("rankButton111.png");
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(texture));
+        drawable.setMinWidth(SCREEN_HEIGHT/3.82f);
+        drawable.setMinHeight(SCREEN_HEIGHT/9.31f);
+        //System.out.println(drawable.getMinHeight() + "" + drawable.getMinWidth());
+        buttonImage = new ImageButton(drawable);
+        buttonImage.setPosition(SCREEN_WIDTH/2-SCREEN_HEIGHT/3.82f/2f, CORE_WIDTH_HEIGHT*5.5f);
+        buttonImage.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                /*parent.changeScreen(SecureCore.GAME_SCREEN);
+                GameScreen.command = "start";*/
+                return true;
+            }
+
+            /*@Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                command = "";
+            }*/
+        });
+        stage.addActor(buttonImage);
+    }
+
     @Override public void show() { }
 
-    @Override public void resize(int width, int height) { }
+    @Override public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
 
     @Override public void pause() { }
 
@@ -53,7 +133,15 @@ class MenuScreen implements Screen {
 
     @Override public void hide() { }
 
-    @Override public void dispose() { }
+    @Override public void dispose() {
+        batch.dispose();
+        stage.dispose();
+        coreTexture.dispose();
+        backgroundTexture.dispose();
+        titleTexture.dispose();
+        parent.dispose();
+        Gdx.app.exit();
+    }
 
 
 }

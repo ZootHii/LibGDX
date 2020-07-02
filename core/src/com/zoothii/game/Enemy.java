@@ -92,6 +92,8 @@ class Enemy extends Object {
 
     public static void stopEnemy(Enemy enemy, SpriteBatch batch){
         enemy.setY(enemy.getY());
+        enemy.setVelocity(0);
+        enemy.setAcceleration(0);
         batch.draw(enemy.getTexture(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight());
     }
 }

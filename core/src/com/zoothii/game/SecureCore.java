@@ -17,6 +17,7 @@ public class SecureCore extends Game {
 	public static final int SPLASH_SCREEN = 0;
 	public static final int GAME_SCREEN = 1;
 	public static final int MENU_SCREEN = 2;
+	public static final int GAME_OVER_SCREEN = 3;
 
 
 	public SecureCore() { super(); }
@@ -27,7 +28,8 @@ public class SecureCore extends Game {
 		changeScreen(SPLASH_SCREEN);
 	}
 
-	@Override    public void dispose()
+	@Override
+	public void dispose()
 	{
 		getScreen().dispose();
 		Gdx.app.exit();
@@ -41,6 +43,8 @@ public class SecureCore extends Game {
 			this.setScreen(new GameScreen(this));
 		}else if(screen == MENU_SCREEN){
 			this.setScreen(new MenuScreen(this));
-		}
+		}/*else if(screen == GAME_OVER_SCREEN){
+			this.setScreen(new GameOverScreen(this));
+		}*/
 	}
 }
