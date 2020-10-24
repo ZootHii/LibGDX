@@ -7,7 +7,7 @@
   </p>
   
 <p align="center">
- <b>NOT COMPLITED</b> <i>Hyper Casual</i> type game, move your finger to move the Core. For every spaceship that you dodged you will gain points.
+ <b>NOT COMPLITED</b> <i>Hyper Casual</i> type game, touch anywhere on the screen and move your finger to move the Core. For every spaceship that you dodged you will gain points.
  </p>
  
  <p align="center">
